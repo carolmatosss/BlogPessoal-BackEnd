@@ -22,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.blogPessoal.blogpessoal.model.Postagem;
 import com.blogPessoal.blogpessoal.repository.PostagemRepository;
+import com.blogPessoal.blogpessoal.repository.TemaRepository;
 
 @RestController
 @RequestMapping("/postagens")
@@ -29,8 +30,12 @@ import com.blogPessoal.blogpessoal.repository.PostagemRepository;
 public class PostagemController {
 
 	@Autowired //A Injeção de Dependência define quais Classes serão instanciadas e em quais lugares serãoInjetadas quando houver necessidade.
-	private PostagemRepository postagemRepository;
+	private PostagemRepository postagemRepository;// A Injeção de dependencia é a injeção da repository que conversa com a JPA que conversa com o banco de dados
 	//Traz o repositório que está extendo os método do JPA
+	
+	@Autowired 
+	private TemaRepository temaRepository;
+	
 	@GetMapping
 	public ResponseEntity<List<Postagem>>getAll(){
 		return ResponseEntity.ok(postagemRepository.findAll());
@@ -52,15 +57,19 @@ public class PostagemController {
 
 	@PostMapping
 	public ResponseEntity<Postagem> post(@Valid @RequestBody Postagem postagem){
+		if (temaRepository.existsById(postagem.getTema().getId())) 
 		return ResponseEntity.status(HttpStatus.CREATED).body(postagemRepository.save(postagem));
-
+return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		//Método post para realizar uma postagem
 	}
 
 	@PutMapping
 	public ResponseEntity <Postagem> put (@Valid @RequestBody Postagem postagem){
-		return postagemRepository.findById(postagem.getId()).map(resposta -> ResponseEntity.status(HttpStatus.OK).body(postagemRepository.save(postagem) ))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+		if (postagemRepository.existsById(postagem.getId())) {
+			if (temaRepository.existsById(postagem.getTema().getId()))
+				return ResponseEntity.status(HttpStatus.OK).body(postagemRepository.save(postagem));
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
 	//Método put semelhante ao método post, a diferenca é que id precisa existir
 	

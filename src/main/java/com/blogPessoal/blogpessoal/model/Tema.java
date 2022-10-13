@@ -16,21 +16,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name = "tb_temas")
 public class Tema {
-	
+
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotNull
 	private String descricao;
-	
+
 	@OneToMany(mappedBy = "tema", cascade =CascadeType.REMOVE)// tirar o ALL e por o REMOVE
-    //Essa anotação é feita para caso eu apague um tema, também seja apagado as postagens cadstradas, pois caso eu procure uma postagem sem tema, dará erro no meu banco de dados
+	//Essa anotação é feita para caso eu apague um tema, também seja apagado as postagens cadstradas, pois caso eu procure uma postagem sem tema, dará erro no meu banco de dados
 	@JsonIgnoreProperties("tema")
 	private List<Postagem> postagem;  //A postagem é em lista, porque são muitas postagens
 
-	
-	
+
+
 	public List<Postagem> getPostagem() {
 		return postagem;
 	}
@@ -54,7 +54,7 @@ public class Tema {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
-	
+
+
 
 }
