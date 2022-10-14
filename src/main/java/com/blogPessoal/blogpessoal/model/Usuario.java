@@ -20,6 +20,8 @@ public class Usuario {
 	@NotBlank (message = "obrigatorio")
 	@Size(min=2 , max=20)
 	private String nome;
+    
+	private String foto; 
 
 
 	@NotBlank
@@ -60,6 +62,14 @@ public class Usuario {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
 
 

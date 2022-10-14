@@ -1,6 +1,6 @@
 package com.blogPessoal.blogpessoal.model;
 
-import java.math.BigDecimal;
+
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -10,13 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity //Entidade que transforma em tabela no banco
@@ -45,22 +44,13 @@ public class Postagem {
 	@JsonIgnoreProperties("postagem") //Para que não fique em um looping infinito entre tema e postagem, pois a relação no spring é bidirecional
 	private Tema tema;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING)
-    @NotNull(message = "Preço é obrigatório!")
-    @Positive(message = "O preço deve ser maior do que zero!")
-    private BigDecimal preco;
+	
 	
 	@ManyToOne
 	@JsonIgnoreProperties ("postagem")
 	private Usuario usuario;
 
-	public BigDecimal getPreco() {
-		return preco;
-	}
-
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
-	}
+	
 
 	public Tema getTema() {
 		return tema;
